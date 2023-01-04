@@ -6,7 +6,7 @@ export const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const baseURL = `http://localhost:4000/`;
+  const baseURL = `https://todo-p28e.onrender.com/`;
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies(['jwt'])
   const navigator = useNavigate()
