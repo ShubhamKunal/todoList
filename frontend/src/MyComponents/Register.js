@@ -22,9 +22,11 @@ export const Register = () => {
       })
       .then((response) => {
         document.getElementById("msg").innerHTML = response.data.message;
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
-        setCookie("jwt",response.data.token)
-        navigator("/")
+        if(response.data.message==="Registered!"){
+          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+          setCookie("jwt",response.data.token)
+          navigator("/",{state:{...response.data.user}})
+        }
       });
   };
   return (
@@ -39,7 +41,7 @@ export const Register = () => {
             type="text"
             className="form-control"
             id="username"
-            maxlength="12"
+            maxLength="12"
             placeholder="Unique username of maximum 12 characters"
             onChange={(e) => setUsername(e.target.value)}
           />

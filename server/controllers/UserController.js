@@ -34,16 +34,16 @@ const register = async function (req, res) {
     username: username,
     password: hashedPassport,
     email: email,
-  }).then(() => {
+  }).then((response) => {
     const access_token = jwt.sign(
       {
-        ...matchedEmail,
+        ...response,
       },
       process.env.SECRET_KEY
     );
     return res.json({
       message: "Registered!",
-      user: matched,
+      user: response,
       token: access_token,
     });
   });
