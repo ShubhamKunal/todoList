@@ -22,7 +22,7 @@ const login = async function (req, res) {
 };
 
 const register = async function (req, res) {
-  const { username, password, email } = req.body;
+  var { username, password, email } = req.body;
 
   const matchedEmail = await User.findOne({ email: email });
   const matchedUsername = await User.findOne({ username: username });
@@ -30,6 +30,9 @@ const register = async function (req, res) {
     return res.json({ message: "User Already Exists!" });
   }
   const hashedPassport = await bcrypt.hash(password, 10);
+  if(username.length>12){
+    username = username.substr(0,10)+"GM";
+  }
   User.create({
     username: username,
     password: hashedPassport,
@@ -49,4 +52,18 @@ const register = async function (req, res) {
   });
 };
 
-module.exports = { login, register };
+const exists = async function (req, res) {
+  const { username, password, email } = req.body;
+  const matchedEmail = await User.findOne({ email: email });
+  
+  if (matchedEmail === null){
+    return res.json({message:false});
+  }
+  const passwordMatch = await bcrypt.compare(password, matchedEmail.password);
+  if(passwordMatch===false){
+    return res.json({message:false});
+  }
+  return res.json({message:true});
+}
+
+module.exports = { login, register, exists };
