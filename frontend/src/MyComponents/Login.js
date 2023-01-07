@@ -3,16 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
+import { Loading } from "./Loading";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading,setLoading] = useState(false);
   const baseURL = `https://todo-p28e.onrender.com/`;
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const navigator = useNavigate();
   const handleSubmit = function (e) {
     e.preventDefault();
+    setLoading(true);
     axios
       .post(
         baseURL + "login",
@@ -25,6 +28,7 @@ export const Login = () => {
         }
       )
       .then((response) => {
+      setLoading(false);
         document.getElementById("msg").innerHTML = response.data.message;
         if (response.data.message === "Logged!") {
           axios.defaults.headers.common[
@@ -49,6 +53,7 @@ export const Login = () => {
     });
   });
   async function handleCallbackResponse(response) {
+    setLoading(true);
     const token = response.credential;
     var userObject = jwtDecode(token);
     setEmail(userObject.email);
@@ -80,6 +85,7 @@ export const Login = () => {
         }
       )
       .then((response) => {
+        setLoading(false);
         document.getElementById("msg").innerHTML = response.data.message;
         if (response.data.message === "Logged!") {
           axios.defaults.headers.common[
@@ -99,6 +105,7 @@ export const Login = () => {
         withCredentials:true
       })
       .then((response) => {
+        setLoading(false);
         document.getElementById("msg").innerHTML = response.data.message;
         if(response.data.message==="Registered!"){
           axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
@@ -155,6 +162,7 @@ export const Login = () => {
       <h4 id="msg" className="my-3">
         {" "}
       </h4>
+      {loading?<Loading />:<></>}
     </div>
   );
 };
