@@ -24,6 +24,7 @@
     text-align: left;
     overflow-wrap: break-word;
     position: relative;
+    max-width: 100%;
 }
 #todo:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
