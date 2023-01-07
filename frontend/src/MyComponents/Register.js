@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { Loading } from "./Loading";
+
 export const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading,setLoading] = useState(false);
   const baseURL = `https://todo-p28e.onrender.com/`;
   // eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies(['jwt'])
   const navigator = useNavigate()
   const handleSubmit = function (e) {
     e.preventDefault();
+    setLoading(true);
     axios
       .post(baseURL + "register", {
         username: username,
@@ -21,6 +25,7 @@ export const Register = () => {
         withCredentials:true
       })
       .then((response) => {
+      setLoading(false);
         document.getElementById("msg").innerHTML = response.data.message;
         if(response.data.message==="Registered!"){
           axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
@@ -84,6 +89,7 @@ export const Register = () => {
         Already have an account ? <Link to="/login">Login</Link>
       </span>
       <h4 id="msg" className="my-3"> </h4>
+      {loading?<Loading />:<></>}
     </div>
   );
 };
