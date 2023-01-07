@@ -11,9 +11,20 @@
 }
 #todos{
     padding: 2px 16px;
-    width: 1200px;
+    /* width: 1200px; */
+    max-width: 500px;
     
 }
+@media(min-width:600px){
+    #todos{
+        max-width: 800px;
+    }
+}
+@media (min-width: 800px) {
+    #todos {
+      max-width: 1000px;
+    }
+  }
 #todo{
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
@@ -24,7 +35,6 @@
     text-align: left;
     overflow-wrap: break-word;
     position: relative;
-    max-width: 100%;
 }
 #todo:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
